@@ -5,12 +5,19 @@ import (
 	"os"
 	"time"
 
+	"github.com/joho/godotenv"
+
 	packages "m3u_consumer/packages"
 )
 
-const URL = "http://f4ntasy.pro/get.php?username=42F4wrGf&password=K93Xeh&type=m3u_plus&output=ts"
-
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		fmt.Println("Erro ao carregar o arquivo .env")
+	}
+
+	URL := os.Getenv("URL")
+
 	fmt.Println("Fetching data from:", URL)
 	fmt.Println("Start time:", time.Now().Format(time.RFC1123))
 
