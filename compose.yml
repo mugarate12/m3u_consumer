@@ -1,0 +1,7 @@
+services:
+  m3u_consumer:
+    build: .
+    container_name: m3u_consumer
+    # Uncomment to mount local output file
+    volumes:
+      - .:/app
