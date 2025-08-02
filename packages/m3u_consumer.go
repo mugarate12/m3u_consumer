@@ -79,7 +79,7 @@ func GetDataFromPlaylist(url string) []types.Track {
 					Url:       url,
 					Logo:      logo,
 					RawEXTINF: rawEXTINF, // in API is not used
-					IsChannel: isChannel(url),
+					IsChannel: isChannel(url, genres),
 				}
 
 				metadata_list = append(metadata_list, track) // in API, metadata_list is not used. This is insertion in DB
@@ -126,6 +126,10 @@ func parseEXTINF(metadata string) (map[string]string, string) {
 	return result, rawEXTINF
 }
 
-func isChannel(url string) bool {
+func isChannel(url string, group string) bool {
+  if strings.Contains(strings.ToLower(group), "canais") || strings.Contains(strings.ToLower(group), "canal") {
+    return true
+  }
+
 	return strings.HasSuffix(url, ".ts")
 }
