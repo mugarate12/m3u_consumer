@@ -37,7 +37,7 @@ func TestAddSeriesInfoIntoTracks(t *testing.T) {
     {Title: "TV Senado", IsChannel: true, Group: "CANAIS | ABERTOS", Url: "http://xtrpro.cyou:80/621500634/174514897/9603", Logo: "http://www.tmsimg.com/assets/s105047_ll_h3_aa.png", RawEXTINF: ""},
   }
 
-  expected := []TrackWithSeriesInfo{
+  expected := []tracks_types.TrackWithSeriesInfo{
     {Track: tracks[0], Season: "01", Episode: "01"},
     {Track: tracks[1], Season: "01", Episode: "02"},
     {Track: tracks[2], Season: "", Episode: ""},
@@ -65,7 +65,7 @@ func TestGetAllTracksFromSeries(t *testing.T) {
     {Title: "TV Senado", IsChannel: true, Group: "CANAIS | ABERTOS", Url: "http://xtrpro.cyou:80/621500634/174514897/9603", Logo: "http://www.tmsimg.com/assets/s105047_ll_h3_aa.png", RawEXTINF: ""},
   }
 
-  tracksWithSeries := []TrackWithSeriesInfo{
+  tracksWithSeries := []tracks_types.TrackWithSeriesInfo{
     {Track: tracks[0], Season: "01", Episode: "01"},
     {Track: tracks[1], Season: "02", Episode: "02"},
     {Track: tracks[2], Season: "", Episode: ""},

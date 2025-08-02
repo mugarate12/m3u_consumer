@@ -12,19 +12,12 @@ type SeriesInfo struct {
 	Episode string
 }
 
-type TrackWithSeriesInfo struct {
-	tracks_types.Track
-
-	Season  string
-	Episode string
-}
-
-func AddSeriesInfoIntoTracks(tracks []tracks_types.Track) []TrackWithSeriesInfo {
-	var seriesInfoList []TrackWithSeriesInfo
+func AddSeriesInfoIntoTracks(tracks []tracks_types.Track) []tracks_types.TrackWithSeriesInfo {
+	var seriesInfoList []tracks_types.TrackWithSeriesInfo
 	
 	for _, track := range tracks {
 		if track.IsChannel {
-			seriesInfoList = append(seriesInfoList, TrackWithSeriesInfo{
+			seriesInfoList = append(seriesInfoList, tracks_types.TrackWithSeriesInfo{
 				Track:   track,
 				Season:  "",
 				Episode: "",
@@ -35,7 +28,7 @@ func AddSeriesInfoIntoTracks(tracks []tracks_types.Track) []TrackWithSeriesInfo 
 		seriesInfo, ok := getSeriesInfoFromTitle(track.Title)
 
 		if !ok {
-			seriesInfoList = append(seriesInfoList, TrackWithSeriesInfo{
+			seriesInfoList = append(seriesInfoList, tracks_types.TrackWithSeriesInfo{
 				Track:   track,
 				Season:  "",
 				Episode: "",
@@ -44,13 +37,13 @@ func AddSeriesInfoIntoTracks(tracks []tracks_types.Track) []TrackWithSeriesInfo 
 		}
 
 		if seriesInfo.Season != "" && seriesInfo.Episode != "" {
-			seriesInfoList = append(seriesInfoList, TrackWithSeriesInfo{
+			seriesInfoList = append(seriesInfoList, tracks_types.TrackWithSeriesInfo{
 				Track:   track,
 				Season:  seriesInfo.Season,
 				Episode: seriesInfo.Episode,
 			})
 		} else {
-			seriesInfoList = append(seriesInfoList, TrackWithSeriesInfo{
+			seriesInfoList = append(seriesInfoList, tracks_types.TrackWithSeriesInfo{
 				Track:   track,
 				Season:  "",
 				Episode: "",
@@ -61,8 +54,8 @@ func AddSeriesInfoIntoTracks(tracks []tracks_types.Track) []TrackWithSeriesInfo 
 	return seriesInfoList
 }
 
-func GetAllTracksFromSeries (tracks []TrackWithSeriesInfo, title string, season *string) []TrackWithSeriesInfo {
-	var tracksFiltered []TrackWithSeriesInfo
+func GetAllTracksFromSeries (tracks []tracks_types.TrackWithSeriesInfo, title string, season *string) []tracks_types.TrackWithSeriesInfo {
+	var tracksFiltered []tracks_types.TrackWithSeriesInfo
 	titleWithoutSeason := GetNameOfSeries(title)
 
 	// its can be a LIKE SQL query or a simple SQL query if our includes:
@@ -81,7 +74,7 @@ func GetAllTracksFromSeries (tracks []TrackWithSeriesInfo, title string, season 
 	}
 
 	if season != nil {
-		var tracksFilteredBySeason []TrackWithSeriesInfo
+		var tracksFilteredBySeason []tracks_types.TrackWithSeriesInfo
 		for _, track := range tracksFiltered {
 			if track.Season == *season {
 				tracksFilteredBySeason = append(tracksFilteredBySeason, track)

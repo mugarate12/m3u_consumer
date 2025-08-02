@@ -8,3 +8,10 @@ type Track struct {
 	RawEXTINF string
 	IsChannel bool
 }
+
+type TrackWithSeriesInfo struct {
+	Track
+
+	Season  string
+	Episode string
+}

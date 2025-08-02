@@ -44,7 +44,7 @@ func GetDataFromPlaylist(url string) []types.Track {
 	// -1 tvg-name="Zoo S01E01" tvg-logo="http://gstaticontent.com/images/y7DV6v8YcshWXcAdvItx6Sa5GTD_small.jpg" group-title="Series | Amazon Prime Video",Zoo S01E01
 	var rawEXTINF string
 
-	   metadata_list := make([]types.Track, 0)
+  metadata_list := make([]types.Track, 0)
 
 	for scanner.Scan() {
 		line := scanner.Text()
