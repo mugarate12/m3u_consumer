@@ -14,4 +14,7 @@ type TrackWithSeriesInfo struct {
 
 	Season  string
 	Episode string
+
+	IsSeries   bool
+	SeriesName string
 }

@@ -5,24 +5,18 @@ import (
 	"os"
 	"time"
 
-	"github.com/joho/godotenv"
-
+	config "m3u_consumer/config"
 	packages "m3u_consumer/packages"
+	repositories "m3u_consumer/repositories"
 )
 
 func main() {
-	err := godotenv.Load()
-	if err != nil {
-		fmt.Println("Erro ao carregar o arquivo .env")
-		os.Exit(1)
-	}
+  config.LoadConfig()
 
-	URL := os.Getenv("URL")
-
-	fmt.Println("Fetching data from:", URL)
+	fmt.Println("Fetching data from:", config.URL)
 	fmt.Println("Start time:", time.Now().Format(time.RFC1123))
 
-	data := packages.GetDataFromPlaylist(URL)
+	data := packages.GetDataFromPlaylist(config.URL)
 	dataWithSeriesInfo := packages.AddSeriesInfoIntoTracks(data)
 	file, err := os.Create("tracks.txt")
 
@@ -34,8 +28,8 @@ func main() {
 	defer file.Close()
 
 	for _, t := range dataWithSeriesInfo {
-		line := fmt.Sprintf("Group: %s | Title: %s | URL: %s | Logo: %s | IsChannel: %t\n | Season: %s | Episode: %s\n",
-			t.Group, t.Title, t.Url, t.Logo, t.IsChannel, t.Season, t.Episode)
+		line := fmt.Sprintf("Group: %s | Title: %s | URL: %s | Logo: %s | IsChannel: %t\n | Season: %s | Episode: %s | IsSeries %t | SeriesName %s \n",
+			t.Group, t.Title, t.Url, t.Logo, t.IsChannel, t.Season, t.Episode, t.IsSeries, t.SeriesName)
 		_, err := file.WriteString(line)
 		if err != nil {
 			fmt.Println("Error writing to file:", err)
@@ -45,6 +39,8 @@ func main() {
 
 	fmt.Println("Tracks written to tracks.txt successfully.")
 	fmt.Println("End time:", time.Now().Format(time.RFC1123))
+
+  repositories.SaveTracksToDatabase(dataWithSeriesInfo)
 
 	// Example of how to get all tracks from a specific series without need to manipulate the title
 	// contentFromSeries := packages.GetAllTracksFromSeries(dataWithSeriesInfo, "Van Helsing S01E01", nil)

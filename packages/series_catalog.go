@@ -41,6 +41,8 @@ func AddSeriesInfoIntoTracks(tracks []tracks_types.Track) []tracks_types.TrackWi
 				Track:   track,
 				Season:  seriesInfo.Season,
 				Episode: seriesInfo.Episode,
+        IsSeries: true,
+        SeriesName: GetNameOfSeries(track.Title),
 			})
 		} else {
 			seriesInfoList = append(seriesInfoList, tracks_types.TrackWithSeriesInfo{
