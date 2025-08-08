@@ -62,9 +62,13 @@ func SaveTracksToDatabase(tracks []types.TrackWithSeriesInfo) error {
       SeriesName: track.SeriesName,
     }
 
-    query := `INSERT INTO tracks (group_name, title, url, logo, season, episode, is_channel, is_series, series_name) 
-              VALUES (:group_name, :title, :url, :logo, :season, :episode, :is_channel, :is_series, :series_name)`
+    query := `INSERT INTO tracks (group_name, title, url, logo, season, episode, is_channel, is_series, series_name)
+          SELECT :group_name, :title, :url, :logo, :season, :episode, :is_channel, :is_series, :series_name
+          WHERE NOT EXISTS (
+          SELECT 1 FROM tracks WHERE url = :url AND title = :title
+          )`
     
+    // fmt.Println("Inserting track:", trackDTO.Title)
     if _, err := tx.NamedExec(query, &trackDTO); err != nil {
       log.Println("Error inserting track:", err)
       return err

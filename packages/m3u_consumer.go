@@ -87,7 +87,7 @@ func GetDataFromPlaylist(url string) []types.Track {
 		}
 	}
 
-	fmt.Println("Total tracks added:", len(metadata_list))
+	fmt.Println("Total tracks founded:", len(metadata_list))
 
 	return metadata_list
 }
