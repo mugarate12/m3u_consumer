@@ -1,4 +1,4 @@
-tests:
+tests-local:
 	go test ./...
 
 build:
@@ -6,3 +6,6 @@ build:
 
 run:
 	docker compose run m3u_consumer
+
+test:
+	docker compose run --rm tests

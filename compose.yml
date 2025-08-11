@@ -26,3 +26,19 @@ services:
       - POSTGRES_DB=${POSTGRES_DB:-m3u_content}
     volumes:
       - .:/app
+
+  tests:
+    build:
+      context: .
+      dockerfile: infra/tests/Dockerfile
+    container_name: m3u_consumer_tests
+    depends_on:
+      - database
+    environment:
+      - POSTGRES_HOST=database
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=${POSTGRES_USER:-local_user}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-password}
+      - POSTGRES_DB=${POSTGRES_DB:-m3u_content}
+    volumes:
+      - .:/app
