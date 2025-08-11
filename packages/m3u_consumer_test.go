@@ -1,10 +1,13 @@
 package packages
 
 import (
+	"io"
 	"os"
 	"testing"
 
 	"github.com/joho/godotenv"
+
+	config "m3u_consumer/config"
 )
 
 func TestGetDataFromPlaylist(t *testing.T) {
@@ -19,6 +22,19 @@ func TestGetDataFromPlaylist(t *testing.T) {
 	if len(data) == 0 {
 		t.Error("Expected to get some data from the playlist, but got none.")
 	}
+}
+
+// this test is to get text content from playlist URL
+func TestGetPlaylistData(t *testing.T) {
+  config.LoadConfig("../.env")
+
+  _, respBody := GetPlaylistData(config.URL)
+  bodyBytes, _ := io.ReadAll(respBody)
+  textContent := string(bodyBytes)
+
+  if len(textContent) == 0 {
+    t.Error("Expected to get some text content from the playlist, but got none.")
+  }
 }
 
 func TestParseEXTINF(t *testing.T) {

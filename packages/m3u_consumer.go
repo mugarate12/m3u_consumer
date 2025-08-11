@@ -3,6 +3,7 @@ package packages
 import (
 	"bufio"
 	"fmt"
+	"io"
 	"net/http"
 	"regexp"
 	"strings"
@@ -30,9 +31,6 @@ func GetDataFromPlaylist(url string) []types.Track {
 
 	if resp != nil {
 		defer resp.Body.Close()
-		fmt.Println("Response status:", resp.Status)
-	} else {
-		fmt.Println("No response received.")
 	}
 
 	scanner := bufio.NewScanner(resp.Body)
@@ -90,6 +88,28 @@ func GetDataFromPlaylist(url string) []types.Track {
 	fmt.Println("Total tracks founded:", len(metadata_list))
 
 	return metadata_list
+}
+
+func GetPlaylistData(url string) (bufio.Scanner, io.ReadCloser) {
+  var resp *http.Response
+	var err error
+	req, err := http.NewRequest("GET", url, nil)
+
+	if err == nil {
+		req.Header.Set("User-Agent", "Duplecast/1.0 (Android; IPTV)")
+		req.Header.Set("Referer", "https://duplecast.com/app")
+		req.Header.Set("Origin", "https://duplecast.com")
+		req.Header.Set("Connection", "keep-alive")
+
+		resp, err = http.DefaultClient.Do(req)
+	}
+
+	if err != nil {
+    fmt.Println("Error fetching data:", err)
+  }
+
+	scanner := bufio.NewScanner(resp.Body)
+  return *scanner, resp.Body
 }
 
 func parseEXTINF(metadata string) (map[string]string, string) {

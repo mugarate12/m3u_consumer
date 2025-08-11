@@ -17,8 +17,13 @@ var (
   POSTGRES_PORT string
 )
 
-func LoadConfig() {
-  err := godotenv.Load(".env")
+func LoadConfig(path ...string) {
+  envPath := ".env"
+  if len(path) > 0 && path[0] != "" {
+    envPath = path[0]
+  }
+  
+  err := godotenv.Load(envPath)
   if err != nil {
     fmt.Println("Erro ao carregar o arquivo .env")
     os.Exit(1)
